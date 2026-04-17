@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Proyecto IISI — Ingeniería en Sistemas de Información" />
+  <title>Proyecto IISI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0e1a;
+      --surface:   #111827;
+      --card:      #1a2235;
+      --border:    rgba(99, 179, 237, 0.15);
+      --accent1:   #63b3ed;
+      --accent2:   #9f7aea;
+      --accent3:   #68d391;
+      --text:      #e2e8f0;
+      --muted:     #718096;
+      --radius:    16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,179,237,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(159,122,234,.10) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10,14,26,.75);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--accent1); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      gap: 1.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--accent1);
+      background: rgba(99,179,237,.08);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      animation: fadeDown .6s ease both;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(1.5); }
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      animation: fadeDown .7s .1s ease both;
+    }
+
+    h1 .gradient {
+      background: linear-gradient(120deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      max-width: 620px;
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+      animation: fadeDown .7s .2s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeDown .7s .3s ease both;
+    }
+
+    .btn {
+      padding: .75rem 1.75rem;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s, opacity .2s;
+      display: inline-block;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,179,237,.25); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent1); }
+
+    @keyframes fadeDown {
+      from { opacity:0; transform:translateY(-18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── SECTION ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent1);
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── CARDS GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(99,179,237,.4);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .card p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 4rem;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+
+    /* ── TEAM ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .team-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: transform .25s, border-color .25s;
+    }
+    .team-card:hover { transform: translateY(-4px); border-color: rgba(159,122,234,.4); }
+
+    .avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff;
+    }
+
+    .team-name { font-weight: 700; margin-bottom: .25rem; }
+    .team-role { font-size: .85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    footer span {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">IISI</span>
+    <ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#objetivos">Objetivos</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge"><span class="badge-dot"></span>Proyecto Académico 2026</div>
+    <h1>Ingeniería en<br/><span class="gradient">Sistemas de Información</span></h1>
+    <p class="hero-sub">
+      Proyecto desarrollado como parte del programa IISI, explorando soluciones tecnológicas innovadoras para el mundo actual.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#objetivos">Ver objetivos</a>
+      <a class="btn btn-ghost" href="#equipo">Conocer el equipo</a>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="reveal">
+      <p class="section-label">📌 Sobre el proyecto</p>
+      <h2 class="section-title">¿Qué es este proyecto?</h2>
+      <p class="section-desc">
+        Este proyecto forma parte del curso IISI y tiene como objetivo aplicar los conocimientos adquiridos en el desarrollo de sistemas de información, análisis de datos y diseño de soluciones tecnológicas.
+      </p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="card-icon">🔬</div>
+        <h3>Investigación</h3>
+        <p>Análisis profundo de la problemática planteada y revisión de antecedentes relevantes en el área de sistemas de información.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">💡</div>
+        <h3>Desarrollo</h3>
+        <p>Implementación de la solución tecnológica usando metodologías ágiles y herramientas de vanguardia actuales.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">📊</div>
+        <h3>Resultados</h3>
+        <p>Evaluación y documentación de los resultados obtenidos, con métricas claras y conclusiones fundamentadas.</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat reveal">
+        <div class="stat-num">2026</div>
+        <div class="stat-label">Año académico</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Dedicación</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">A+</div>
+        <div class="stat-label">Meta</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">IISI</div>
+        <div class="stat-label">Curso</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- OBJETIVOS -->
+  <section id="objetivos">
+    <div class="reveal">
+      <p class="section-label">🎯 Objetivos</p>
+      <h2 class="section-title">Metas del proyecto</h2>
+      <p class="section-desc">Definimos objetivos claros y alcanzables que guían el desarrollo y evaluación del proyecto.</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="card-icon">🎓</div>
+        <h3>Objetivo General</h3>
+        <p>Diseñar e implementar una solución informática que resuelva la problemática central planteada en el curso IISI.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔷</div>
+        <h3>Objetivo Específico 1</h3>
+        <p>Analizar los requerimientos del sistema mediante técnicas de levantamiento de información y modelado.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔷</div>
+        <h3>Objetivo Específico 2</h3>
+        <p>Diseñar la arquitectura del sistema y definir los componentes tecnológicos más adecuados para la solución.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔷</div>
+        <h3>Objetivo Específico 3</h3>
+        <p>Validar la solución implementada mediante pruebas funcionales y evaluación de usuarios finales.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- EQUIPO -->
+  <section id="equipo">
+    <div class="reveal">
+      <p class="section-label">👥 Equipo</p>
+      <h2 class="section-title">Integrantes</h2>
+      <p class="section-desc">El proyecto fue desarrollado por estudiantes comprometidos con la excelencia académica.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="avatar">A</div>
+        <div class="team-name">Alumno 1</div>
+        <div class="team-role">Líder de Proyecto</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="avatar">B</div>
+        <div class="team-name">Alumno 2</div>
+        <div class="team-role">Desarrollador</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="avatar">C</div>
+        <div class="team-name">Alumno 3</div>
+        <div class="team-role">Analista</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="avatar">D</div>
+        <div class="team-name">Alumno 4</div>
+        <div class="team-role">Documentación</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <span>Proyecto IISI</span> · Ingeniería en Sistemas de Información · Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
